@@ -8,6 +8,7 @@
 - [Purpose](#purpose)
 - [Notes](#notes)
 - [Flags in Function Table](#flags-in-function-table)
+  - [CAPI3REF: Function Flags](#capi3ref-function-flags)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -72,7 +73,7 @@ From `sqlite-snapshot-202107191400/sqlite3.c`:
 
 From `sqlite-snapshot-202107191400/sqlite3.c`:
 
-CAPI3REF: Function Flags
+### CAPI3REF: Function Flags
 
 These constants may be ORed together with the
 [SQLITE_UTF8 | preferred text encoding] as the fourth argument
@@ -80,7 +81,7 @@ to [sqlite3_create_function()], [sqlite3_create_function16()], or
 [sqlite3_create_function_v2()].
 
 <dl>
-[[SQLITE_DETERMINISTIC]] <dt>SQLITE_DETERMINISTIC</dt><dd>
+<dt>SQLITE_DETERMINISTIC</dt><dd>
 The SQLITE_DETERMINISTIC flag means that the new function always gives
 the same output when the input parameters are the same.
 The [abs|abs() function] is deterministic, for example, but
@@ -91,7 +92,7 @@ SQLite might also optimize deterministic functions by factoring them
 out of inner loops.
 </dd>
 
-[[SQLITE_DIRECTONLY]] <dt>SQLITE_DIRECTONLY</dt><dd>
+<dt>SQLITE_DIRECTONLY</dt><dd>
 The SQLITE_DIRECTONLY flag means that the function may only be invoked
 from top-level SQL, and cannot be used in VIEWs or TRIGGERs nor in
 schema structures such as [CHECK constraints], [DEFAULT clauses],
@@ -102,7 +103,7 @@ that have side-effects or that could potentially leak sensitive
 information.
 </dd>
 
-[[SQLITE_INNOCUOUS]] <dt>SQLITE_INNOCUOUS</dt><dd>
+<dt>SQLITE_INNOCUOUS</dt><dd>
 The SQLITE_INNOCUOUS flag means that the function is unlikely
 to cause problems even if misused.  An innocuous function should have
 no side effects and should not depend on any values other than its
@@ -125,7 +126,7 @@ function has been carefully audited and found to be free of potentially
 security-adverse side-effects and information-leaks.
 </dd>
 
-[[SQLITE_SUBTYPE]] <dt>SQLITE_SUBTYPE</dt><dd>
+<dt>SQLITE_SUBTYPE</dt><dd>
 The SQLITE_SUBTYPE flag indicates to SQLite that a function may call
 [sqlite3_value_subtype()] to inspect the sub-types of its arguments.
 Specifying this flag makes no difference for scalar or aggregate user
