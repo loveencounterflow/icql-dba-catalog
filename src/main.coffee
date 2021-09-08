@@ -93,14 +93,25 @@ class @Dcat
   #---------------------------------------------------------------------------------------------------------
   _create_sql_functions: ->
     @dba.create_stdlib()
-    # prefix  = @cfg.prefix
-    # debug '^324367^', @dba._stdlib_cfg?.prefix
-    # unless ( stdlib_prefix = @dba._stdlib_cfg?.prefix )?
-    #   @dba.create_stdlib { prefix: 'std', }
-    #   debug '^324367^', @dba._stdlib_cfg?.prefix
-    #   # @cfg = guy.lft.lets @cfg, ( d ) -> d.stdlib_prefix = stdlib_prefix
-    # #.......................................................................................................
-    # # @dba.create_function name: prefix + 'advance',  call: ( vnr )   => jr @advance     jp vnr
+    prefix = @cfg.prefix
+    #.........................................................................................................
+    @dba.create_function
+      name:           prefix + 'fun_flags_as_text'
+      deterministic:  true
+      varargs:        false
+      call:           ( flags_int ) ->
+        R = []
+        for k, v of C.function_flags
+          R.push "+#{k}" if ( flags_int & v ) != 0
+        # R.push '+usaf' unless '+inoc' in R
+        return R.join ''
+    #.........................................................................................................
+    for property, bit_pattern of C.function_flags then do ( property, bit_pattern ) =>
+      @dba.create_function
+        name:           prefix + 'fun_' + property
+        deterministic:  true
+        varargs:        false
+        call:           ( flags_int ) -> if ( flags_int & bit_pattern ) != 0 then 1 else 0
     return null
 
 
