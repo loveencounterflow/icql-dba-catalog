@@ -1,17 +1,17 @@
 {
-  "name": "icql-dba-hollerith",
-  "version": "5.1.0",
-  "description": "use vectorial numbers (VNRs) in SQLite to allow for arbitrary many interstitial elements",
+  "name": "icql-dba-catalog",
+  "version": "0.0.1",
+  "description": "provide accessible views on many aspects of an SQLite DB",
   "main": "lib/main.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-hollerith'"
+    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-catalog'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loveencounterflow/icql-dba-hollerith.git"
+    "url": "git+https://github.com/loveencounterflow/icql-dba-catalog.git"
   },
   "keywords": [
     "sql",
@@ -21,18 +21,16 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/loveencounterflow/icql-dba-hollerith/issues"
+    "url": "https://github.com/loveencounterflow/icql-dba-catalog/issues"
   },
-  "homepage": "https://github.com/loveencounterflow/icql-dba-hollerith#readme",
+  "homepage": "https://github.com/loveencounterflow/icql-dba-catalog#readme",
   "dependencies": {
     "cnd": "^9.2.2",
-    "guy": "^1.0.0",
-    "hollerith": "11.0.0",
-    "intertype": "^7.6.7",
-    "letsfreezethat": "^3.1.0"
+    "guy": "1.2.0",
+    "intertype": "^7.6.7"
   },
   "devDependencies": {
-    "icql-dba": "^8.1.0"
+    "icql-dba": "10.0.0"
   },
   "peerDependencies": {
     "icql-dba": "^8.1.0"
