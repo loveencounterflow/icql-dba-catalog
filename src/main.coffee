@@ -69,6 +69,9 @@ class @Dcat
   #---------------------------------------------------------------------------------------------------------
   _create_db_structure: ->
     prefix = @cfg.prefix
+    #-------------------------------------------------------------------------------------------------------
+    # OPTIONS
+    #.......................................................................................................
     @dba.execute SQL"""
       create view #{prefix}compile_time_options as with r1 as ( select
           counter.value                             as idx,
@@ -82,7 +85,11 @@ class @Dcat
           sqlite_compileoption_used( prefix ) as used
         from r1,
         std_str_split_first( r1.facet_txt, '=' ) as r2
-        order by 1;
+        order by 1;"""
+    #-------------------------------------------------------------------------------------------------------
+    # FUNCTIONS
+    #.......................................................................................................
+    @dba.execute SQL"""
       create view #{prefix}functions as select
           f.name                                    as fun_name,
           f.builtin                                 as is_builtin,
@@ -95,8 +102,19 @@ class @Dcat
           #{prefix}fun_is_innocuous( f.flags )      as is_innocuous,
           #{prefix}fun_is_directonly( f.flags )     as is_directonly
         from pragma_function_list as f
-        order by name;
-        """
+        order by name;"""
+    #-------------------------------------------------------------------------------------------------------
+    # SUNDRY
+    #.......................................................................................................
+    @dba.execute SQL"create view #{prefix}pragmas      as
+      select * from pragma_pragma_list()      order by name;"
+    @dba.execute SQL"""create view #{prefix}modules    as
+      select * from pragma_module_list()      order by name;"""
+    @dba.execute SQL"""create view #{prefix}databases  as
+      select * from pragma_database_list()    order by name;"""
+    @dba.execute SQL"""create view #{prefix}collations as
+      select * from pragma_collation_list()   order by name;"""
+    #.......................................................................................................
     return null
 
   #---------------------------------------------------------------------------------------------------------
