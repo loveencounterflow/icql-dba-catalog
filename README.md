@@ -9,6 +9,7 @@
 - [Notes](#notes)
 - [Flags in Function Table](#flags-in-function-table)
   - [CAPI3REF: Function Flags](#capi3ref-function-flags)
+- [To Do](#to-do)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -150,5 +151,16 @@ sqlite3_value_subtype() will always return 0).
 * `SQLITE_ANY`
 
 
+## To Do
 
+* **[–]**
+
+  * The sqlite_compileoption_get() SQL function is a wrapper around the sqlite3_compileoption_get() C/C++
+    function. This routine returns the N-th compile-time option used to build SQLite or NULL if N is out of
+    range. See also the compile_options pragma.
+
+  * The sqlite_compileoption_used() SQL function is a wrapper around the sqlite3_compileoption_used() C/C++
+    function. When the argument X to sqlite_compileoption_used(X) is a string which is the name of a
+    compile-time option, this routine returns true (1) or false (0) depending on whether or not that option
+    was used during the build.
 
