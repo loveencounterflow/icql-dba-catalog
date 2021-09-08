@@ -1,6 +1,6 @@
 {
   "name": "icql-dba-catalog",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "provide accessible views on many aspects of an SQLite DB",
   "main": "lib/main.js",
   "directories": {
