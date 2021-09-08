@@ -39,8 +39,12 @@ types.declare 'constructor_cfg', tests:
 class @Dcat
 
   #---------------------------------------------------------------------------------------------------------
-  @C:
   @C: guy.lft.freeze
+    function_flags:
+      is_deterministic:   0x000000800 # SQLITE_DETERMINISTIC
+      is_directonly:      0x000080000 # SQLITE_DIRECTONLY
+      is_subtype:         0x000100000 # SQLITE_SUBTYPE
+      is_innocuous:       0x000200000 # SQLITE_INNOCUOUS
     defaults:
       constructor_cfg:
         dba:        null
@@ -78,7 +82,21 @@ class @Dcat
           sqlite_compileoption_used( prefix ) as used
         from r1,
         std_str_split_first( r1.facet_txt, '=' ) as r2
-        order by 1;"""
+        order by 1;
+      create view #{prefix}functions as select
+          f.name                                    as fun_name,
+          f.builtin                                 as is_builtin,
+          f.type                                    as type,
+          -- f.enc                                     as enc,
+          f.narg                                    as narg,
+          f.flags                                   as flags,
+          -- xxx_fun_flags_as_text( f.flags )          as tags,
+          #{prefix}fun_is_deterministic( f.flags )  as is_deterministic,
+          #{prefix}fun_is_innocuous( f.flags )      as is_innocuous,
+          #{prefix}fun_is_directonly( f.flags )     as is_directonly
+        from pragma_function_list as f
+        order by name;
+        """
     return null
 
   #---------------------------------------------------------------------------------------------------------
