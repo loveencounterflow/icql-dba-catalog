@@ -164,3 +164,16 @@ sqlite3_value_subtype() will always return 0).
     compile-time option, this routine returns true (1) or false (0) depending on whether or not that option
     was used during the build.
 
+* **[–]** In order to have a complete overview over all schemas (DBs) available to a connection, several
+  name-spaced pragmas à la `select * from $schema.pragma_table_info( $table_name )` have to be issued.
+  Sadly, while `table_name` can be parametrized, the `schema` prefix cannot. Therefore, there can be no
+  constant SQL `select ... from ... join` statement that covers all schemas. One solution would be a trigger
+  on `sqlite_schema` that invalidates a cache of SQL statements, but triggers on system tables are not
+  allowed (as far as I can see not even under `with_unsafe_mode` using `pragma writeable_schema=true`).
+
+  Another solution: cache the result of `pragma__database_list()` and cache that; on change, rebuild an SQL
+  statement using `$schema1.pragma_table_info(...) union all $schema2.pragma_table_info(...)` and so on.
+
+
+
+
