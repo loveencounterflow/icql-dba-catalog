@@ -4,7 +4,7 @@
 ############################################################################################################
 CND                       = require 'cnd'
 rpr                       = CND.rpr
-badge                     = 'ICQL-DBA-VARS/ERRORS'
+badge                     = 'ICQL-DBA-CATALOG/ERRORS'
 debug                     = CND.get_logger 'debug',     badge
 # warn                      = CND.get_logger 'warn',      badge
 # info                      = CND.get_logger 'info',      badge
