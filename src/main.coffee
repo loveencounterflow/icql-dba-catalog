@@ -48,7 +48,6 @@ class @Dcat
 
   #---------------------------------------------------------------------------------------------------------
   @declare_types: ( self ) ->
-    debug '^473400-1^', self.cfg.dba._state, Object.isFrozen self.cfg.dba._state
     self.types.validate.constructor_cfg self.cfg
     guy.props.def self, 'dba', { enumerable: false, value: self.cfg.dba, }
     self.cfg = guy.lft.lets self.cfg, ( d ) -> delete d.dba
@@ -57,7 +56,6 @@ class @Dcat
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
     #.......................................................................................................
-    debug '^473400-2^', cfg.dba._state, Object.isFrozen cfg.dba._state
     guy.cfg.configure_with_types @, cfg, types
     @_compile_sql()
     @_create_sql_functions()
