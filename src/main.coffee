@@ -119,11 +119,11 @@ class @Dcat
 
   #---------------------------------------------------------------------------------------------------------
   _compile_sql: ->
-    prefix = @cfg.prefix
-    # @query "select * from sqlite_schema order by type desc, name;"
-    # sql =
-    #   f: SQL""
-    # guy.props.def @, 'sql', { enumerable: false, value: sql, }
+    prefix  = @cfg.prefix
+    sql     = {}
+    guy.props.def @, 'sql', { enumerable: false, value: sql, }
+    ### TAINT may want to cache, although cache key is about as expensive as producing the value itself ###
+    guy.props.def sql, 'reltrigs', { get: => @_get_union_of_sqlite_schema_selects(), }
     return null
 
   #---------------------------------------------------------------------------------------------------------
@@ -148,20 +148,36 @@ class @Dcat
         deterministic:  true
         varargs:        false
         call:           ( flags_int ) -> if ( flags_int & bit_pattern ) != 0 then 1 else 0
+    #.........................................................................................................
+    @dba.create_table_function
+      name:           prefix + 'reltrigs'
+      columns:        [ 'schema', 'type', 'name', 'tbl_name', 'rootpage', ]
+      parameters:     []
+      varargs:        false
+      deterministic:  false
+      rows:           ( -> yield from @dba.query @sql.reltrigs ).bind @
+    #.........................................................................................................
     return null
 
 
   #=========================================================================================================
   #
   #---------------------------------------------------------------------------------------------------------
-  # alter_table: ( cfg ) ->
-  #   validate.dhlr_alter_table_cfg cfg = { types.defaults.dhlr_alter_table_cfg..., cfg..., }
-  #   { schema
-  #     table_name
-  #     json_column_name
-  #     blob_column_name }  = cfg
-  #   prefix                = @cfg.prefix
-  #   return null
+  walk_schemas: -> yield row.schema for row from @dba.query SQL"select name as schema from dcat_databases;"
+  # _walk_schemas_i: -> yield @dba.sql.I row.name for row from @dba.query SQL"select name from dcat_databases;"
+  _walk_sqlite_schema_selects: ->
+    for schema from @walk_schemas()
+      yield SQL"""
+        select
+            #{@dba.sql.L schema} as schema,
+            type,
+            name,
+            tbl_name,
+            rootpage
+          from #{@dba.sql.I schema}.sqlite_schema"""
+    return null
+  _get_union_of_sqlite_schema_selects: ->
+    return ( s for s from @_walk_sqlite_schema_selects() ).join "\nunion all\n"
 
 
 #===========================================================================================================
